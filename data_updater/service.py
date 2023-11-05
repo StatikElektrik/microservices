@@ -57,6 +57,10 @@ class DataUpdaterService:
                 device_id=each_telemetry["device"].name,
                 telemetry=each_telemetry["telemetry"]
             )
+            self.database_adaptor.update_vehicles_data(
+                device_id=each_telemetry["device"].name,
+                telemetry=each_telemetry["telemetry"]
+            )
 
     def _get_all_telemetry(self) -> dict[str, ThingsBoardDevice | list[TelemetryMessage]]:
         """Returns all telemetry messages from ThingsBoard for each device."""
