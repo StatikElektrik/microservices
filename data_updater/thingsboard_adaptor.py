@@ -8,6 +8,14 @@ from tb_rest_client.models.models_ce import EntityId
 
 
 @dataclass
+class ThingsBoardSettings:
+    """Holds the ThingsBoard settings."""
+    url: str
+    username: str
+    password: str
+
+
+@dataclass
 class ThingsBoardDevice:
     """Holds the device details from ThingsBoard."""
     name: str
@@ -50,15 +58,16 @@ class ThingsBoardAdaptor:
     An adaptor layer between the Python applications and the ThingsBoard service. 
     """
 
-    def __init__(self, user_name: str, password: str):
+    def __init__(self, settings: ThingsBoardSettings):
         """
         Initialize the adaptor object.
         """
-        self.user_name: str = user_name
-        self.password: str = password
-        self.thingsboard_client: RestClientCE = RestClientCE("https://thingsboard.cloud")
+        self.user_name: str = settings.username
+        self.password: str = settings.password
+        self.thingsboard_client: RestClientCE = RestClientCE(settings.url)
 
-        # Connect to the ThingsBoard service.
+    def connect(self):
+        """Connects to the ThingsBoard service."""
         self.thingsboard_client.login(self.user_name, self.password)
         if not self.thingsboard_client.logged_in:
             raise ValueError("Cannot log in to the service. Check username or password.")
