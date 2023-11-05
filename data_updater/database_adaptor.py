@@ -78,3 +78,23 @@ class DatabaseAdaptor:
             table_name,
             self.telemetry_to_database_entry_converter(telemetry)
         )
+
+    def update_vehicles_data(self, device_id: str, telemetry: TelemetryMessage):
+        """
+        This function updates the vehicles data in the database.
+        """
+        self.database_handler.update_data_in_table(
+            "public.vehicles",
+            "battery", str(telemetry.battery_percentage),
+            f"device_id='{device_id.lower()}'"
+        )
+        self.database_handler.update_data_in_table(
+            "public.vehicles",
+            "gps_latitude", str(telemetry.gps_latitude),
+            f"device_id='{device_id.lower()}'"
+        )
+        self.database_handler.update_data_in_table(
+            "public.vehicles",
+            "gps_longitude", str(telemetry.gps_longitude),
+            f"device_id='{device_id.lower()}'"
+        )

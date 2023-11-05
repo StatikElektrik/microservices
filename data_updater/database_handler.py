@@ -145,6 +145,22 @@ class DatabaseHandler:
         count = self.db_cursor.fetchone()[0]
         return count > 0
 
+    @with_cursor
+    def update_data_in_table(self,
+                             table_name: str,
+                             column_name: str,
+                             new_value: str,
+                             where_clause: str):
+        """Update data in a table.
+        :param column_name: The name of the column.
+        :param new_value: The new value.
+        :param where_clause: The where clause.
+        """
+        self.db_cursor.execute(
+            f"UPDATE {table_name} SET {column_name}={new_value} WHERE {where_clause}"
+        )
+        self.db_conn.commit()
+        self.db_conn.rollback()
 
 # This is a singleton pattern implementation.
 def create_database_handler(settings: DatabaseSettings = None) -> DatabaseHandler:
